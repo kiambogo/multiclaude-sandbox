@@ -45,6 +45,30 @@ func TestIsPalindrome(t *testing.T) {
 	}
 }
 
+func TestSlugify(t *testing.T) {
+	tests := []struct {
+		input string
+		want  string
+	}{
+		{"Hello World", "hello-world"},
+		{"  leading and trailing  ", "leading-and-trailing"},
+		{"Hello, World!", "hello-world"},
+		{"multiple   spaces", "multiple-spaces"},
+		{"already-a-slug", "already-a-slug"},
+		{"Héllo Wörld", "héllo-wörld"},
+		{"", ""},
+		{"---", ""},
+		{"Go 1.21 Release Notes", "go-1-21-release-notes"},
+		{"snake_case_input", "snake-case-input"},
+	}
+	for _, tt := range tests {
+		got := stringutil.Slugify(tt.input)
+		if got != tt.want {
+			t.Errorf("Slugify(%q) = %q, want %q", tt.input, got, tt.want)
+		}
+	}
+}
+
 func TestWordCount(t *testing.T) {
 	tests := []struct {
 		input string
