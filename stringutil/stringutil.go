@@ -51,6 +51,22 @@ func IsPalindrome(s string) bool {
 	return true
 }
 
+// Truncate returns s truncated to at most maxLen runes. If s exceeds maxLen,
+// the returned string ends with suffix (e.g. "..."). If maxLen is less than
+// the length of suffix, only the suffix is returned.
+func Truncate(s, suffix string, maxLen int) string {
+	runes := []rune(s)
+	if len(runes) <= maxLen {
+		return s
+	}
+	suffixRunes := []rune(suffix)
+	cutAt := maxLen - len(suffixRunes)
+	if cutAt < 0 {
+		cutAt = 0
+	}
+	return string(runes[:cutAt]) + suffix
+}
+
 // WordCount returns a map of each unique word in s to the number of times it appears.
 // Words are compared case-insensitively.
 func WordCount(s string) map[string]int {

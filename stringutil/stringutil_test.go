@@ -69,6 +69,30 @@ func TestSlugify(t *testing.T) {
 	}
 }
 
+func TestTruncate(t *testing.T) {
+	tests := []struct {
+		input  string
+		suffix string
+		maxLen int
+		want   string
+	}{
+		{"hello world", "...", 20, "hello world"},
+		{"hello world", "...", 11, "hello world"},
+		{"hello world", "...", 8, "hello..."},
+		{"hello world", "...", 3, "..."},
+		{"hello world", "...", 2, "..."},
+		{"hello world", "...", 0, "..."},
+		{"hello", "", 3, "hel"},
+		{"", "...", 5, ""},
+		{"こんにちは世界", "…", 5, "こんにち…"},
+	}
+	for _, tt := range tests {
+		got := stringutil.Truncate(tt.input, tt.suffix, tt.maxLen)
+		if got != tt.want {
+			t.Errorf("Truncate(%q, %q, %d) = %q, want %q", tt.input, tt.suffix, tt.maxLen, got, tt.want)
+		}
+	}
+}
 func TestWordCount(t *testing.T) {
 	tests := []struct {
 		input string
