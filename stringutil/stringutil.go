@@ -6,6 +6,25 @@ import (
 	"unicode"
 )
 
+// Slugify converts s to a URL-friendly slug: lowercase, with runs of
+// non-alphanumeric characters collapsed to a single hyphen, and leading/
+// trailing hyphens trimmed.
+func Slugify(s string) string {
+	var b strings.Builder
+	inSep := false
+	for _, r := range strings.ToLower(s) {
+		if unicode.IsLetter(r) || unicode.IsDigit(r) {
+			b.WriteRune(r)
+			inSep = false
+		} else if !inSep && b.Len() > 0 {
+			b.WriteByte('-')
+			inSep = true
+		}
+	}
+	result := b.String()
+	return strings.TrimRight(result, "-")
+}
+
 // Reverse returns the string s with its characters in reverse order.
 func Reverse(s string) string {
 	runes := []rune(s)
